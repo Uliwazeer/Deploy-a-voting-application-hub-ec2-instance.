@@ -1,39 +1,4 @@
-provider "aws" {
-  region = "us-east-2"
-}
-variable "inetrnal_ports" {
-  type    = list(any)
-  default = ["8200", "4200", "5000", "9500"]
-}
-variable "external_ports" {
-  type    = list(any)
-  default = ["80", "8080", "443"]
-}
+Loading module from “http://192.168.49.2:30080/assets/index-ZTgihMRB.js” was blocked because of a disallowed MIME type (“text/html”). 192.168.49.2:30080
+Loading failed for the module with source “http://192.168.49.2:30080/assets/index-ZTgihMRB.js”. 192.168.49.2:30080:9:69
+The stylesheet http://192.168.49.2:30080/assets/index-DfvtSL41.css was not loaded because its MIME type, “text/html”, is not “text/css”. 192.168.49.2:30080
 
-resource "aws_security_group" "public_sg" {
-  name        = "public_sg"
-  description = "for allowing access to internet"
-  vpc_id      = "vpc-02c2fbf1e4c85a09c"
-
-  dynamic "ingress" {
-    for_each = var.inetrnal_ports
-    iterator = port
-    content {
-      from_port   = port.value
-      to_port     = port.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-  }
-  dynamic "egress" {
-    for_each = var.external_ports
-    iterator = port
-    content {
-      from_port   = port.value
-      to_port     = port.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
-}
